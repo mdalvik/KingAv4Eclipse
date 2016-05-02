@@ -16,5 +16,8 @@ public interface IDownService {
 	@GET()
 	Call<ResponseBody> downVideo(@Url String url,@Header("Range") String lang);
 
-
+	//获取下载文件大小
+   @Streaming
+   @GET
+   Call<ResponseBody> getDownFileSize(@Url String url);
 }
