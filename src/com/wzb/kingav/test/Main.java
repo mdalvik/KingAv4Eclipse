@@ -130,7 +130,7 @@ public class Main {
 		}
 		
 		
-		System.out.println("--");
+		System.out.println("–ﬁ∏ƒÃ·Ωª≤‚ ‘");
 		
 		//Retrofit retrofit = new Retrofit.Builder().baseUrl(GlobalVariable.NET_ADDRESS).addConverterFactory(new ConverterFactoryVideoPlay()).build();
 		//IService create = retrofit.create(IService.class);
