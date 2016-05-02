@@ -17,7 +17,7 @@ public interface IDownService {
 	Call<ResponseBody> downVideo(@Url String url,@Header("Range") String lang);
 
 	/**
-	 * 获取文件大小
+	 * 鑾峰彇鏂囦欢澶у皬
 	 * @param url
 	 * @return
 	 */
