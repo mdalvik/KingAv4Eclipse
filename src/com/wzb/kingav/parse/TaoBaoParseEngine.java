@@ -18,7 +18,7 @@ public class TaoBaoParseEngine implements IParseEngine {
 	@Override
 	public List<MenuBean> ParseMenu(String html) {
 		Document document = Jsoup.parse(html);
-		// 选中菜单ul
+	
 		Elements ul = document.select(".nav.nav-stacked.navigation").select("li");
 		List<MenuBean> list = new ArrayList<>();
 		for (int i = 0; i < ul.size(); i++) {
@@ -47,22 +47,17 @@ public class TaoBaoParseEngine implements IParseEngine {
 		for (int i = 0; i < ul.size(); i++) {
 			Element element = ul.get(i);
 			VideoBean videoBean = new VideoBean();
-			// 链接
 			videoBean.setLink(element.select("a").attr("href"));
 
-			// 标题
 
 			videoBean.setTitle(element.select("a").attr("title"));
 			// src
 
 			videoBean.setImg(element.select("img").attr("src"));
-			// 时长
 
 			videoBean.setPlayTime(element.select(".video-overlay.badge.transparent").text());
-			// 更新日期
 
 			videoBean.setPullTime(element.select(".pull-left").text());
-			// 播放次数
 			videoBean.setPlayCount(element.select(".pull-right.text-right").text());
 			list.add(videoBean);
 

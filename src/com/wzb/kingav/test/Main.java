@@ -59,83 +59,15 @@ public class Main {
 
 		Executor executor = new ThreadPoolExecutor(10, Integer.MAX_VALUE, 0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
-		Retrofit retrofit = new Retrofit.Builder().callbackExecutor(executor).client(client)
-				.baseUrl("http://dlsw.baidu.com/").build();
-
-		IDownService service = retrofit.create(IDownService.class);
-		long fileSize = 19995914;
-		int threadCount = 10;
-		RandomAccessFile ra = new RandomAccessFile("D:/11.exe", "rw");
-		ra.setLength(fileSize);
-		List<FileDownBean> ranges = UtilFile.getRanges(fileSize, threadCount);
-
-		System.out.println(ranges);
-
-		for (int i = 0; i < threadCount; i++) {
-			final FileDownBean fileDownBean = ranges.get(i);
-			// http://www.avtaobao.cc/file/2302/1/d395857a0ddef9db4f69/1462235278/mp4/2302.mp4
-			// http://dlsw.baidu.com/sw-search-sp/soft/47/10963/fiddler4_4.6.2.0_setup.1453708442.exe
-			Call<ResponseBody> downVideo = service.downFile(
-					"http://www.avtaobao.cc/file/2302/1/d395857a0ddef9db4f69/1462235278/mp4/2302.mp4",
-					fileDownBean.getRange());
-			downVideo.enqueue(new Callback<ResponseBody>() {
-
-				@Override
-				public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-					Headers headers = response.headers();
-					System.out.println("��ʼ������" + fileDownBean.getRange() + Thread.currentThread().getName());
-					// System.out.println(headers.name(i));
-					System.out.println(headers.get("Content-Range"));
-					RandomAccessFile ra = null;
-
-					try {
-						ra = new RandomAccessFile("D:/11.exe", "rw");
-					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					try {
-
-						ra.seek(fileDownBean.getStart());
-						InputStream is = response.body().byteStream();
-						byte buf[] = new byte[2048];
-						int len = -1;
-						long size = 0;
-						while ((len = is.read(buf)) != -1) {
-
-							ra.write(buf, 0, len);
-
-						}
-						System.out.println("��" + fileDownBean.getStart() + "�߳�ִ�����");
-
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					// System.out.println(response.body().contentLength());
-				}
-
-				@Override
-				public void onFailure(Call<ResponseBody> call, Throwable t) {
-					// TODO Auto-generated method stub
-
-					System.out.println("erro" + fileDownBean.getStart());
-				}
-			});
-		}
-
-		System.out.println("�޸��ύ����");
-
-		// Retrofit retrofit = new
-		// Retrofit.Builder().baseUrl(GlobalVariable.NET_ADDRESS).addConverterFactory(new
-		// ConverterFactoryVideoPlay()).build();
-		// IService create = retrofit.create(IService.class);
-		// Call<VideoPlayBean> videoPlay =
-		// create.getVideoPlay("2309/%E5%92%8C%E9%81%B5%E4%B9%89%E7%9A%84%E5%89%8D%E5%A5%B3%E5%8F%8B%E4%B9%8B%E5%89%8D%E7%9A%84%E6%93%8D%E9%80%BC%E8%A7%86%E9%A2%91-%E6%98%AF%E6%97%B6%E5%80%99%E5%8F%91%E5%87%BA%E6%9D%A5%E4%BA%86/");
-		// Response<VideoPlayBean> execute = videoPlay.execute();
-		// System.out.println(execute.body());
+		Retrofit retrofit = new Retrofit.Builder().addConverterFactory(new ConverterFactoryMenu()).client(client)
+				.baseUrl("http://www.avtaobao.cc").build();
+		IService service = retrofit.create(IService.class);
+		Call<List<MenuBean>> call = service.getListMenu();
+		Response<List<MenuBean>> execute = call.execute();
+		Call<List<VideoBean>> listVideo = service.getListVideo("recent", "/", "1");
+		Response<List<VideoBean>> execute2 = listVideo.execute();
+		System.out.println(execute2.body());
+		
 	}
 
 	private static Interceptor getInterceptor() {
