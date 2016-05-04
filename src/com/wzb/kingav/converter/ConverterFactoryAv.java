@@ -13,17 +13,18 @@ import retrofit2.Converter;
 import retrofit2.Converter.Factory;
 import retrofit2.Retrofit;
 
-public class ConverterFactoryVideo extends Factory {
+public class ConverterFactoryAv extends Factory {
 
 	@Override
-	public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-		// TODO Auto-generated method stub
+	public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit)
+	{
+	    // TODO Auto-generated method stub
 		// class sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl
 		if (type instanceof ParameterizedType) {
 
 			ParameterizedType parameterizedType = (ParameterizedType) type;
 			Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-
+  //判断用哪个Converter
 			if (actualTypeArguments.length > 0) {
 				if (actualTypeArguments[0] == VideoBean.class) {
 					return new ConverterVideo();
@@ -36,6 +37,7 @@ public class ConverterFactoryVideo extends Factory {
 
 		}
 		return null;
+	
 	}
 
 }

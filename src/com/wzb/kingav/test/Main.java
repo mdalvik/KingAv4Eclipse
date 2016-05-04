@@ -22,6 +22,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.wzb.kingav.converter.ConverterFactoryAv;
 import com.wzb.kingav.converter.ConverterFactoryMenu;
 import com.wzb.kingav.converter.ConverterFactoryVideo;
 import com.wzb.kingav.converter.ConverterFactoryVideoPlay;
@@ -59,14 +60,15 @@ public class Main {
 
 		Executor executor = new ThreadPoolExecutor(10, Integer.MAX_VALUE, 0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
-		Retrofit retrofit = new Retrofit.Builder().addConverterFactory(new ConverterFactoryMenu()).client(client)
+		Retrofit retrofit = new Retrofit.Builder().addConverterFactory(new ConverterFactoryAv()).client(client)
 				.baseUrl("http://www.avtaobao.cc").build();
 		IService service = retrofit.create(IService.class);
 		Call<List<MenuBean>> call = service.getListMenu();
-		Response<List<MenuBean>> execute = call.execute();
-		Call<List<VideoBean>> listVideo = service.getListVideo("recent", "/", "1");
+Response<List<MenuBean>> execute = call.execute();
+		Call<List<VideoBean>> listVideo = service.getListVideo("/", "/", "/");
 		Response<List<VideoBean>> execute2 = listVideo.execute();
 		System.out.println(execute2.body());
+		System.out.println(execute.body());
 		
 	}
 
